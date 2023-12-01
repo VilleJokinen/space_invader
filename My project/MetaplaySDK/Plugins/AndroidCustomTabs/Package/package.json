@@ -1,0 +1,14 @@
+{
+  "name": "io.metaplay.unitysdk.androidcustomtabs",
+  "version": "0.0.1",
+  "displayName": "Metaplay Unity SDK - Android Custom Tabs Plugin",
+  "description": "Integration plugin for Android Custom Tabs.",
+  "unity": "2021.2",
+  "unityRelease": "4f1",
+  "documentationUrl": "https://docs.metaplay.io/",
+  "author": {
+    "name": "Metaplay",
+    "email": "info@metaplay.io",
+    "url": "https://metaplay.io"
+  }
+}

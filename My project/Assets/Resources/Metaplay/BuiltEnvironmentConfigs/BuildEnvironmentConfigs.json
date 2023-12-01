@@ -1,0 +1,29 @@
+[
+  {
+    "Id": "offline",
+    "Description": "",
+    "ConnectionEndpointConfig": {
+      "ServerHost": "",
+      "ServerPort": 0,
+      "ServerPortForWebSocket": 0,
+      "EnableTls": false,
+      "CdnBaseUrl": "",
+      "CommitIdCheckRule": "Disabled",
+      "BackupGateways": [],
+      "IsOfflineMode": true
+    },
+    "ClientDebugConfig": {
+      "EnablePlayerConsistencyChecks": true,
+      "PlayerChecksumGranularity": "PerActionSingleTickPerFrame",
+      "LogLevel": "Debug",
+      "LogLevelOverrides": []
+    },
+    "ClientGameConfigBuildApiConfig": {
+      "AdminApiBaseUrl": null,
+      "GameConfigPublishPolicy": "NotAllowed",
+      "AdminApiAuthenticationTokenProvider": "None",
+      "AdminApiCredentialsPath": null,
+      "AdminApiOAuth2Settings": null
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "extends": "@metaplay/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "isolatedModules": true,
+    "outDir": "../../../.moon/cache/types/MetaplaySDK/NodePackages/Subscriptions",
+    "rootDir": "src"
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

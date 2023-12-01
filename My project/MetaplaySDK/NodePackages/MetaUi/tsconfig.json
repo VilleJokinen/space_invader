@@ -1,0 +1,28 @@
+{
+  "extends": "@metaplay/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../.moon/cache/types/MetaplaySDK/NodePackages/MetaUi",
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "vite/client"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.d.ts",
+    "tests/unit/**/*.spec.ts",
+    ".storybook/*.ts"
+  ],
+  "vueCompilerOptions": {
+    "plugins": [
+      "@vue/language-plugin-pug"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@metaplay/bootstrap",
+  "version": "1.0.0",
+  "description": "Customized version of Bootstrap 4 for the LiveOps Dashboard.",
+  "exports": "./dist/meta-bootstrap.css",
+  "type": "module",
+  "devDependencies": {
+    "bootstrap": "^4.6.2",
+    "bootstrap-vue": "^2.23.1",
+    "jquery": "^3.7.1",
+    "popper.js": "^1.16.1",
+    "sass": "^1.69.5",
+    "vue": "3.3.4",
+    "vue-toastification": "2.0.0-rc.5"
+  },
+  "scripts": {
+    "postinstall": "sass --load-path=node_modules/ --update meta-bootstrap.sass:dist/meta-bootstrap.css"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true
+}

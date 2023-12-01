@@ -1,0 +1,61 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'io.metaplay.android.blockstore'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 1
+        targetSdk 33
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+            // Trim and obfuscate this library when this library is compiled into AAR
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Pass on the same preserve-rules to the game build when AAR is used there
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+}
+
+if (System.getenv('UNITY_EDITOR_HOME') == null) {
+    throw new GradleException("UNITY_EDITOR_HOME must be defined. Check the README.")
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-auth-blockstore:16.2.0'
+    compileOnly files(System.getenv('UNITY_EDITOR_HOME') + '/Editor/Data/PlaybackEngines/AndroidPlayer/Variations/il2cpp/Development/Classes/classes.jar')
+}
+
+tasks.register('buildLib') {
+    dependsOn "assembleRelease"
+    doLast {
+        File binFolder = new File(projectDir.getParentFile().getParentFile(), 'BuiltLibrary')
+        binFolder.mkdirs()
+        File editorFolder = new File(binFolder, 'Editor')
+        editorFolder.mkdirs()
+        new File(editorFolder, "MetaplayGmsBlockStoreDependencies.xml").text = """<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.android.gms:play-services-auth-blockstore:16.2.0" />
+  </androidPackages>
+</dependencies>
+"""
+        new File(editorFolder, "MetaplayGmsBlockStoreDependencies.xml.meta").text = """fileFormatVersion: 2
+guid: 475bd6e25311c564783b448e2e20c96e
+TextScriptImporter:
+  externalObjects: {}
+  userData:""" + " " + """
+  assetBundleName:""" + " " + """
+  assetBundleVariant:""" + " " + """
+"""
+        java.nio.file.Files.copy(new File(projectDir, 'build/outputs/aar/metaplayblockstore-release.aar').toPath(), new File(binFolder, 'metaplayblockstore-release.aar').toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+    }
+}

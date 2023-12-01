@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="Metaplay.Generated" />
+  <assembly fullname="Metaplay" />
+  <assembly fullname="Metaplay.Unity" />
+  <assembly fullname="{{USER_SHARED_CODE_ASSEMBLY_NAME}}" />
+</linker>

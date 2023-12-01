@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'io.metaplay.android.customtabs'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 1
+        targetSdk 33
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+            // Trim and obfuscate this library when this library is compiled into AAR
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Pass on the same preserve-rules to the game build when AAR is used there
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+}
+
+if (System.getenv('UNITY_EDITOR_HOME') == null) {
+    throw new GradleException("UNITY_EDITOR_HOME must be defined. Check the README.")
+}
+
+dependencies {
+    implementation "androidx.browser:browser:1.4.0"
+    compileOnly files(System.getenv('UNITY_EDITOR_HOME') + '/Editor/Data/PlaybackEngines/AndroidPlayer/Variations/il2cpp/Development/Classes/classes.jar')
+}
+
+tasks.register('buildLib') {
+    dependsOn "assembleRelease"
+    doLast {
+        File binFolder = new File(projectDir.getParentFile().getParentFile(), 'Package/CompiledArchive')
+        binFolder.mkdirs()
+        File editorFolder = new File(binFolder, 'Editor')
+        editorFolder.mkdirs()
+        new File(editorFolder, "MetaplayCustomTabsDependencies.xml").text = """<dependencies>
+  <androidPackages>
+    <androidPackage spec="androidx.browser:browser:1.4.0" />
+  </androidPackages>
+</dependencies>
+"""
+        java.nio.file.Files.copy(new File(projectDir, 'build/outputs/aar/metaplaycustomtabs-release.aar').toPath(), new File(binFolder, 'metaplaycustomtabs-release.aar').toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+    }
+}

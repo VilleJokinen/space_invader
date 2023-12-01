@@ -1,0 +1,39 @@
+{
+    "name": "Metaplay.Unity.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Metaplay",
+        "Metaplay.Unity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Microsoft.CodeAnalysis.dll",
+        "Microsoft.CodeAnalysis.CSharp.dll",
+        "System.Collections.Immutable.dll",
+        "Google.Apis.Core.dll",
+        "Google.Apis.Sheets.v4.dll",
+        "Google.Apis.Auth.dll",
+        "Google.Apis.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "versionDefines": [
+      {
+        "name": "io.metaplay.unitysdk.androidcustomtabs",
+        "expression": "0.0.1",
+        "define": "METAPLAY_HAS_PLUGIN_ANDROID_CUSTOMTABS"
+      },
+      {
+        "name": "com.google.external-dependency-manager",
+        "define": "METAPLAY_HAS_GOOGLE_EDM4U"
+      }
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

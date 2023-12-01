@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <RootNamespace>Game.Cloud</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(SharedCodePath)\**\*.cs" LinkBase="SharedCode" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(MetaplayServerPath)\Cloud\Metaplay.Cloud.csproj" />
+    <ProjectReference Include="$(MetaplayServerPath)\CodeAnalyzers\Metaplay.CodeAnalyzers.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Analyzer</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

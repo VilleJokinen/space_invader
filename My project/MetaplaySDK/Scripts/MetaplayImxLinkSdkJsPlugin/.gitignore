@@ -1,0 +1,10 @@
+node_modules/
+
+dist/*
+# Include the built plugin in order to allow bundling it in the Metaplay SDK package
+# to avoid requiring customers to build it. There's MetaplayImmutableXJsLibBuilder
+# for building it automatically at Unity build time, but its invocation of npm
+# currently does not work on Mac.
+!dist/metaplay-imx-link-sdk-plugin.min.js
+!dist/metaplay-imx-link-sdk-plugin.min.js.LICENSE.txt
+!dist/version

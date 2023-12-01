@@ -1,0 +1,11 @@
+<Project>
+ <PropertyGroup>
+  <DefineConstants Condition=" '$(MetaplayDefines)' != '' ">$(DefineConstants);$(MetaplayDefines)</DefineConstants>
+
+  <!-- Enable to include the pre-R25 game config build pipeline in the build. -->
+  <!-- <DefineConstants>$(DefineConstants);METAPLAY_LEGACY_GAMECONFIG_PIPELINE</DefineConstants> -->
+
+  <!-- Enable to use the pre-R25 version of the fixed-point (F32 and F64) parsing. -->
+  <!-- <DefineConstants>$(DefineConstants);METAPLAY_USE_LEGACY_FIXED_POINT_PARSING</DefineConstants> -->
+ </PropertyGroup>
+</Project>

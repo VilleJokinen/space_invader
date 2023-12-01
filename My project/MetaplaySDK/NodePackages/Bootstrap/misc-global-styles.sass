@@ -1,0 +1,134 @@
+// This file is part of Metaplay SDK which is released under the Metaplay SDK License.
+
+// Non-bootstrap related global styles
+
+.text-truncate
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+.text-no-transform
+  text-transform: none
+
+.text-break-word
+  overflow-wrap: break-word
+  white-space: pre-wrap
+  word-break: break-all
+
+.mt-01
+  margin-top: .1rem
+
+.card-manual-content-padding
+  padding-left: 20px
+  padding-right: 20px
+
+.card-manual-title-padding
+  padding-left: 20px
+  padding-right: 20px
+  padding-top: 20px
+
+.clickable-list-group-item
+  cursor: pointer
+
+.clickable-list-group-item:hover
+  background: $metaplay-grey !important
+  color: $metaplay-dark
+
+.list-group-stripes
+  .list-group-item:nth-child(even)
+    background: darken($metaplay-grey-lightest, 1%)
+
+.list-group-stripes-odd
+  .list-group-item:nth-child(odd)
+    background: darken($metaplay-grey-lightest, 1%)
+
+.child-element-stripes
+  &:nth-child(even)
+    background: darken($metaplay-grey-lightest, 1%)
+
+.child-element-borders
+  border-bottom: solid 1px $metaplay-grey-light
+
+  &:last-child
+    border-bottom: none
+
+.bg-gradient-meta-green
+  background-color: $metaplay-green
+  background-image: linear-gradient(131deg, $metaplay-green 0%, $metaplay-green 49.9%, darken($metaplay-green-dark, 0%) 50%, darken($metaplay-green-dark, 2%) 100%)
+
+.bg-gradient-meta-red
+  background-color: $metaplay-red
+  background-image: linear-gradient(131deg, $metaplay-red 0%, $metaplay-red 49.9%, darken($metaplay-red, 5%) 50%, darken($metaplay-red, 7%) 100%)
+
+.bg-gradient-meta-yellow
+  background-color: $metaplay-green
+  background-image: linear-gradient(131deg, $metaplay-green 0%, $metaplay-green 49.9%, darken($metaplay-green-dark, 0%) 50%, darken($metaplay-green-dark, 2%) 100%)
+
+.bg-card-gradient-meta-grey
+  background-color: $metaplay-grey-lightest
+  background-image: linear-gradient(131deg, $metaplay-grey-lightest 0%, $metaplay-grey-lightest 74.9%, rgb(242,242,242) 75%, rgb(242,242,242) 100%)
+
+.bg-card-gradient-meta-white
+  background-color: $metaplay-grey-lightest
+  background-image: linear-gradient(131deg, white 0%, white 74.9%, rgb(242,242,242) 75%, rgb(242,242,242) 100%)
+
+.table-row-link
+  cursor: pointer
+
+.subtle-button
+  border: none !important
+  line-height: 1 !important
+
+.border-bottom-dashed
+  border-bottom: 1px dashed $metaplay-grey
+
+.log
+  font-size: 8pt
+  padding: 0.5rem
+  overflow-wrap: break-word
+  word-break: break-all
+  overflow: scroll
+
+  pre
+    overflow: visible
+    margin: 0
+
+a.disabled
+  pointer-events: none
+  color: grey
+
+.code-box
+  font-size: 8pt
+  padding: 0.5rem
+  overflow-wrap: break-word
+  word-break: break-all
+  overflow: scroll
+
+  pre
+    overflow: visible
+    margin: 0
+
+.not-collapsed
+  .fa-angle-right
+    transform: rotateZ(90deg)
+
+.fa-angle-right
+  transition: transform 0.3s
+
+.primaryStripes
+  background: repeating-linear-gradient(135deg, rgba(45, 144, 220, 0.05), rgba(45, 144, 220, 0.05) 10px, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 20px)
+
+.secondaryStripes
+  background: repeating-linear-gradient(135deg, rgba(104, 104, 104, 0.05), rgba(104, 104, 104, 0.05) 10px, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 20px)
+
+.infoStripes
+  background: repeating-linear-gradient(135deg, rgba(119, 80, 171, 0.05), rgba(119, 80, 171, 0.05) 10px, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 20px)
+
+.warningStripes
+  background: repeating-linear-gradient(135deg, rgba(229, 170, 0, 0.05), rgba(229, 170, 0, 0.05) 10px, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 20px)
+
+.dangerStripes
+  background: repeating-linear-gradient(135deg, rgba(250, 96, 63, 0.05), rgba(250, 96, 63, 0.05) 10px, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 20px)
+
+.pointer
+  cursor: pointer

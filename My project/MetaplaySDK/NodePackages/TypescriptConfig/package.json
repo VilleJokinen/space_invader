@@ -1,0 +1,8 @@
+{
+  "name": "@metaplay/typescript-config",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Reusable Typescript configuration for Metaplay's projects.",
+  "license": "SEE LICENSE IN LICENSE"
+}

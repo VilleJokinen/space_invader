@@ -1,0 +1,48 @@
+{
+    "name": "Metaplay.Unity",
+    "rootNamespace": "",
+    "references": [
+        "Metaplay",
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Stores"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.purchasing",
+            "expression": "0.0.1",
+            "define": "METAPLAY_HAS_UNITY_PURCHASING"
+        },
+        {
+            "name": "com.unity.purchasing",
+            "expression": "4.6.0",
+            "define": "METAPLAY_HAS_UNITY_PURCHASING_4_6_0_OR_NEWER"
+        },
+        {
+            "name": "com.unity.purchasing",
+            "expression": "4.8.0",
+            "define": "METAPLAY_HAS_UNITY_PURCHASING_4_8_0_OR_NEWER"
+        },
+        {
+            "name": "com.google.firebase.messaging",
+            "expression": "0.0.1",
+            "define": "METAPLAY_ENABLE_FIREBASE_MESSAGING"
+        },
+        {
+            "name": "io.metaplay.unitysdk.androidcustomtabs",
+            "expression": "0.0.1",
+            "define": "METAPLAY_HAS_PLUGIN_ANDROID_CUSTOMTABS"
+        },
+        {
+            "name": "com.google.external-dependency-manager",
+            "define": "METAPLAY_HAS_GOOGLE_EDM4U"
+        }
+    ],
+    "noEngineReferences": false
+}

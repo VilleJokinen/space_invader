@@ -1,0 +1,19 @@
+type: library
+language: javascript
+tags:
+  - public-package
+
+project:
+  name: bootstrap
+  description: Custom version of Bootstrap 4 with LiveOps Dashboard specific additions and defaults.
+  maintainers:
+    - 'Teemu'
+    - 'Peninah'
+
+tasks:
+  build:
+    command: sass --load-path=node_modules/ --update meta-bootstrap.sass:dist/meta-bootstrap.css
+    inputs:
+      - '*.sass'
+    outputs:
+      - dist/

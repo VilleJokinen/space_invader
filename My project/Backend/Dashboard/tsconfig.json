@@ -1,0 +1,29 @@
+{
+  "extends": "@metaplay/typescript-config/tsconfig.json",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "meta-components.d.ts",
+    "vue-compat.d.ts",
+    "gamespecific_tests/unit/**/*.spec.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": "src",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "outDir": "../../../../.moon/cache/types/Samples/HelloWorld/Backend/Dashboard"
+  },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "vueCompilerOptions": {
+    "plugins": [
+      "@vue/language-plugin-pug"
+    ]
+  }
+}

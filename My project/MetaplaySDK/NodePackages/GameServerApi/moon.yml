@@ -1,0 +1,26 @@
+type: library
+tags:
+  - public-package
+
+project:
+  description: Utility library for interacting with the game server API.
+  maintainers:
+    - Paul
+
+tasks:
+  lint:
+    command: eslint . --fix
+    inputs:
+      - "src/**/*.{ts,d.ts,vue}"
+      - "*.{js,ts,cjs}"
+      - /MetaplaySDK/NodePackages/EslintConfig/index.js
+
+  typecheck:
+    command: tsc --noEmit
+    deps:
+      - lint # Don't typecheck if the code doesn't lint.
+      - ^:typecheck
+    inputs:
+      - "src/**/*.{ts,d.ts,vue}"
+      - "*.{json,ts,d.ts}"
+      - /MetaplaySDK/NodePackages/TypescriptConfig/tsconfig.json

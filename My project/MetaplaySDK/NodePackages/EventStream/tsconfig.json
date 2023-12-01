@@ -1,0 +1,17 @@
+{
+  "extends": "@metaplay/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../.moon/cache/types/MetaplaySDK/NodePackages/EventStream",
+    "baseUrl": "src"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/typings.d.ts"
+  ],
+  "vueCompilerOptions": {
+    "plugins": [
+      "@vue/language-plugin-pug"
+    ]
+  }
+}

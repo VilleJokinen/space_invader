@@ -1,0 +1,6 @@
+
+Bot:
+  MaxBots:                  1
+  SpawnRate:                10
+  ExpectedSessionDuration:  00:02:00
+  #ForceConflictingPlayerId: true

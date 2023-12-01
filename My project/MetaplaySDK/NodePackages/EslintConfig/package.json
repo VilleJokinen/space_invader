@@ -1,0 +1,25 @@
+{
+  "name": "@metaplay/eslint-config",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reusable ESLint configuration for Metaplay's projects.",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "@rushstack/eslint-patch": "^1.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "@vue/eslint-config-standard-with-typescript": "^8.0.0",
+    "eslint": "^8.47.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-cypress": "^2.13.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-pug": "^1.2.5",
+    "eslint-plugin-vue": "^9.15.1"
+  },
+  "peerDependencies": {
+    "eslint": "^8.36.0"
+  }
+}

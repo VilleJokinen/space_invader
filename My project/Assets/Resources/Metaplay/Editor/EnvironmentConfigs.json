@@ -1,0 +1,134 @@
+[
+  {
+    "Id": "offline",
+    "Description": "",
+    "ConnectionEndpointConfig": {
+      "ServerHost": "",
+      "ServerPort": 0,
+      "ServerPortForWebSocket": 0,
+      "EnableTls": false,
+      "CdnBaseUrl": "",
+      "CommitIdCheckRule": "Disabled",
+      "BackupGateways": [],
+      "IsOfflineMode": true
+    },
+    "ClientDebugConfig": {
+      "EnablePlayerConsistencyChecks": true,
+      "PlayerChecksumGranularity": "PerActionSingleTickPerFrame",
+      "LogLevel": "Debug",
+      "LogLevelOverrides": []
+    },
+    "ClientGameConfigBuildApiConfig": {
+      "AdminApiBaseUrl": "",
+      "GameConfigPublishPolicy": "NotAllowed",
+      "AdminApiAuthenticationTokenProvider": "None",
+      "AdminApiCredentialsPath": "",
+      "AdminApiOAuth2Settings": {
+        "ClientId": "",
+        "AuthorizationEndpoint": "",
+        "TokenEndpoint": "",
+        "Audience": "",
+        "LocalCallbackUrls": []
+      }
+    }
+  },
+  {
+    "Id": "localhost",
+    "Description": "",
+    "ConnectionEndpointConfig": {
+      "ServerHost": "localhost",
+      "ServerPort": 9339,
+      "ServerPortForWebSocket": 9380,
+      "EnableTls": false,
+      "CdnBaseUrl": "http://localhost:5552/",
+      "CommitIdCheckRule": "Disabled",
+      "BackupGateways": [],
+      "IsOfflineMode": false
+    },
+    "ClientDebugConfig": {
+      "EnablePlayerConsistencyChecks": true,
+      "PlayerChecksumGranularity": "PerActionSingleTickPerFrame",
+      "LogLevel": "Debug",
+      "LogLevelOverrides": []
+    },
+    "ClientGameConfigBuildApiConfig": {
+      "AdminApiBaseUrl": "http://localhost:5550/api/",
+      "GameConfigPublishPolicy": "Allowed",
+      "AdminApiAuthenticationTokenProvider": "None",
+      "AdminApiCredentialsPath": "",
+      "AdminApiOAuth2Settings": {
+        "ClientId": "",
+        "AuthorizationEndpoint": "",
+        "TokenEndpoint": "",
+        "Audience": "",
+        "LocalCallbackUrls": []
+      }
+    }
+  },
+  {
+    "Id": "develop",
+    "Description": "Example cloud-based development environment (Not deployed for HelloWorld). To use this, replace the server domains with your own.",
+    "ConnectionEndpointConfig": {
+      "ServerHost": "helloworld-develop.p1.metaplay.io",
+      "ServerPort": 9339,
+      "ServerPortForWebSocket": 9380,
+      "EnableTls": true,
+      "CdnBaseUrl": "https://helloworld-develop-assets.p1.metaplay.io",
+      "CommitIdCheckRule": "OnlyIfDefined",
+      "BackupGateways": [],
+      "IsOfflineMode": false
+    },
+    "ClientDebugConfig": {
+      "EnablePlayerConsistencyChecks": true,
+      "PlayerChecksumGranularity": "PerActionSingleTickPerFrame",
+      "LogLevel": "Debug",
+      "LogLevelOverrides": []
+    },
+    "ClientGameConfigBuildApiConfig": {
+      "AdminApiBaseUrl": "https://helloworld-develop-admin.p1.metaplay.io/api/",
+      "GameConfigPublishPolicy": "AskForConfirmation",
+      "AdminApiAuthenticationTokenProvider": "OAuth2",
+      "AdminApiCredentialsPath": "",
+      "AdminApiOAuth2Settings": {
+        "ClientId": "",
+        "AuthorizationEndpoint": "",
+        "TokenEndpoint": "",
+        "Audience": "",
+        "LocalCallbackUrls": []
+      }
+    }
+  },
+  {
+    "Id": "stable",
+    "Description": "Example cloud-based stable environment (Not deployed for HelloWorld). To use this, replace the server domains with your own.",
+    "ConnectionEndpointConfig": {
+      "ServerHost": "helloworld-stable.p1.metaplay.io",
+      "ServerPort": 9339,
+      "ServerPortForWebSocket": 9380,
+      "EnableTls": true,
+      "CdnBaseUrl": "https://helloworld-stable-assets.p1.metaplay.io",
+      "CommitIdCheckRule": "Disabled",
+      "BackupGateways": [],
+      "IsOfflineMode": false
+    },
+    "ClientDebugConfig": {
+      "EnablePlayerConsistencyChecks": false,
+      "PlayerChecksumGranularity": "PerActionSingleTickPerFrame",
+      "LogLevel": "Debug",
+      "LogLevelOverrides": []
+    },
+    "ClientGameConfigBuildApiConfig": {
+      "AdminApiBaseUrl": "https://helloworld-stable-admin.p1.metaplay.io/api/",
+      "GameConfigPublishPolicy": "UploadOnly",
+      "AdminApiAuthenticationTokenProvider": "OAuth2",
+      "AdminApiCredentialsPath": "",
+      "AdminApiOAuth2Settings": {
+        "ClientId": "",
+        "AuthorizationEndpoint": "",
+        "TokenEndpoint": "",
+        "Audience": "",
+        "LocalCallbackUrls": []
+      }
+    }
+  }
+]

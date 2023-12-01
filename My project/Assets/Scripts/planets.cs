@@ -7,16 +7,18 @@ using TMPro;
 using UnityEngine.Events;
 using System;
 using Random = UnityEngine.Random;
+using Metaplay.Sample;
 
 public class planets : MonoBehaviour, IPointerClickHandler
 {
+
+    public int planetIndex;
     
-    public double percentageFull;
+
     public planets targetPlanet;
 
     public GameManager gameManager;
-    public planets randomPlanet;
-    public double tresholdPercentage = 80.00;
+
     public bool isClicked1;
     public bool isClicked2;
 
@@ -24,18 +26,15 @@ public class planets : MonoBehaviour, IPointerClickHandler
     public Vector2 clickPosition1;
     public Vector2 clickPosition2;
 
-    public int planet_population;
-    public int planet_max_population;
+    
     public TMP_Text planet_populationText;
-    public TMP_Text ownershipText;
     public TMP_Text planet_max_populationText;
 
-    public TMP_Text planet_positionText;
 
-    SpriteRenderer sprite_planet;
+    public SpriteRenderer sprite_planet;
 
 
-    private float timer = 0.0f;
+
 
     public Transform trackedObject;
     public Vector2 planet_position;
@@ -64,8 +63,8 @@ public class planets : MonoBehaviour, IPointerClickHandler
             {
 
                 OnGameObjectClicked?.Invoke();
-                gameManager.OnPlanetClicked(this);
-
+                
+                gameManager.onPlanetClick(this);
 
 
             }
@@ -73,22 +72,17 @@ public class planets : MonoBehaviour, IPointerClickHandler
     }
 
 
-    public enum Ownership
-    {
-        Own,
-        Neutral,
-        Enemy
-    };
 
 
 
-    public Ownership ownership;
+
+    
 
 
     void Start()
     {
          
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager = FindAnyObjectByType<GameManager>();
 
         sprite_planet = GetComponent<SpriteRenderer>();
 
@@ -103,29 +97,20 @@ public class planets : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
+        int ownership = MetaplayClient.PlayerModel.PlanetList[planetIndex].Ownership;
+
+
+        int planet_population = MetaplayClient.PlayerModel.PlanetList[planetIndex].Population;
+        int planet_max_population = MetaplayClient.PlayerModel.PlanetList[planetIndex].MaxPopulation;
 
         planet_position = trackedObject.position;
 
-        planet_populationText.text = string.Format("Population: {0}", planet_population);
-        ownershipText.text = string.Format("Ownership: {0}", ownership);
-        planet_max_populationText.text = string.Format("Max population: {0}", planet_max_population);
-        planet_positionText.text = string.Format("Position: {0}", planet_position);
+        planet_populationText.text = string.Format("{0}", planet_population);
+        planet_max_populationText.text = string.Format("Max: {0}", planet_max_population);
 
 
-        timer += Time.deltaTime;
-
-        if(timer >= 2.0f && ownership == Ownership.Own)
-        {
-
-
-            onPopulationGrowth();
-        }
-
-        else if(timer >= 3.0f && ownership == Ownership.Enemy)
-        {
-            onPopulationGrowth();
-
-        }
+        
+        
 
         planet_size = planet_max_population;
 
@@ -175,64 +160,26 @@ public class planets : MonoBehaviour, IPointerClickHandler
 
         }
 
-        
 
-        if (ownership == Ownership.Own)
+        if (ownership == 1)
         {
             sprite_planet.color = (new Color32(0, 57, 255, 255));
         }
-        else if (ownership == Ownership.Neutral)
+        else if (ownership == 2)
         {
             sprite_planet.color = (new Color32(137, 20, 92, 255));
         }
-        else if (ownership == Ownership.Enemy)
+        else if (ownership == 3)
         {
             sprite_planet.color = (new Color32(255, 0, 29, 255));
         }
 
-        if (planet_population > planet_max_population)
-        {
-            planet_population = planet_max_population;
-        }
+       
 
-        percentageFull = (100 * planet_population) / planet_max_population;
-
-        
-        if(percentageFull >= tresholdPercentage && ownership == Ownership.Enemy)
-        {
-
-            //gameManager.planetList;
-            //foreach(var planet in gameManager.planetList)
-            //{
-
-            //}
-
-            generateRandomPlanet();
-            
-            
-            gameManager.Attack(this, randomPlanet);
-        }
-
+       
     }
 
-    void generateRandomPlanet()
-    {
-        var index = Random.RandomRange(0, gameManager.planetList.Count);
-        randomPlanet = gameManager.planetList[index];
-        if (randomPlanet == this)
-        {
-            generateRandomPlanet();
-        }
-    }
-    void onPopulationGrowth()
-    {
-        if (planet_population > 0)
-        {
-            planet_population += 1;
-        }
-
-        timer = 0.0f;
-    }
+   
 
 }
 

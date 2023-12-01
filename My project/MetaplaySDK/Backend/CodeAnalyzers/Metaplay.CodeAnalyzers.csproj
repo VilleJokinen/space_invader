@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <IsPackable>false</IsPackable>
+
+    <!-- Avoid ID conflicts with the package project. -->
+    <PackageId>*$(MSBuildProjectFullPath)*</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
+    <!--
+      \note Added this explicit reference to Microsoft.CodeAnalysis.Common, because on some (Mac) machines
+            the build was otherwise unable to find the correct Microsoft.CodeAnalysis assembly. Doesn't make
+            a lot of sense to me because this is referenced transitively via Microsoft.CodeAnalysis.CSharp.
+            Revisit this if it becomes a problem.
+    -->
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.5.22">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

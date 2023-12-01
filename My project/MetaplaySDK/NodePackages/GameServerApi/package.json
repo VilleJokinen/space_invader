@@ -1,0 +1,24 @@
+{
+  "name": "@metaplay/game-server-api",
+  "version": "1.0.0",
+  "description": "Utility library for interacting with the game server API.",
+  "main": "src/index.ts",
+  "type": "module",
+  "dependencies": {
+    "@metaplay/typescript-config": "workspace:^",
+    "@metaplay/eslint-config": "workspace:^",
+    "axios": "^1.6.0",
+    "event-source-polyfill": "1.0.31",
+    "jaro-winkler": "^0.2.8",
+    "pinia": "^2.1.7",
+    "vue": "3.3.4",
+    "@vue/compat": "3.3.4",
+    "@types/event-source-polyfill": "^1.0.3",
+    "@types/jaro-winkler": "^0.2.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true
+}

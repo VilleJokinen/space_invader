@@ -1,0 +1,25 @@
+{
+  "extends": "@metaplay/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../.moon/cache/types/MetaplaySDK/NodePackages/Core",
+    "baseUrl": "src",
+    "types": [
+      "cypress",
+      "node"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.d.ts",
+    "cypress.config.ts",
+    "vite.config.ts",
+    ".storybook/*.ts",
+    "tests/vitest/**/*.ts"
+  ],
+  "vueCompilerOptions": {
+    "plugins": [
+      "@vue/language-plugin-pug"
+    ]
+  }
+}

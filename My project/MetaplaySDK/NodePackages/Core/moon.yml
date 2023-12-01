@@ -1,0 +1,42 @@
+type: library
+tags:
+  - public-package
+
+project:
+  description: The Metaplay SDK LiveOps Dashboard core components.
+  maintainers:
+    - Teemu
+    - Paul
+    - Peninah
+
+tasks:
+  lint:
+    command: eslint . --fix
+    inputs:
+      - "src/**/*.{ts,d.ts,vue}"
+      - "*.{js,ts,cjs}"
+      - /MetaplaySDK/NodePackages/EslintConfig/index.js
+
+  typecheck:
+    command: vue-tsc --noEmit
+    deps:
+      - lint # Don't typecheck if the code doesn't lint.
+      - ^:typecheck
+    inputs:
+      - "src/**/*.{ts,d.ts,vue}"
+      - "*.{json,ts,d.ts}"
+      - /MetaplaySDK/NodePackages/TypescriptConfig/tsconfig.json
+
+  test-unit:
+    command: vitest run
+    deps:
+      - typecheck
+    inputs:
+      - "src/**/*.{ts,d.ts,vue}"
+      - "tests/vitest/**/*.spec.ts"
+
+  storybook:
+    command: storybook dev -p 6006
+    local: true
+    deps:
+      - typecheck

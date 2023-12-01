@@ -1,0 +1,12 @@
+# Force-include .csproj files in the sdk folder (toplevel .gitignore for Unity projects might have these ignored)
+!*.csproj
+
+# Build results
+bin/
+obj/
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
+# MacOs
+.DS_Store

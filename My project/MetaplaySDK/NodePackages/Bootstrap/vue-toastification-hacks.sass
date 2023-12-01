@@ -1,0 +1,35 @@
+// This file is part of Metaplay SDK which is released under the Metaplay SDK License.
+
+// Custom styles for toast component
+$vt-color-default: $metaplay-blue
+$vt-color-success: rgb(212, 237, 218)
+$vt-text-color-success: rgb(21, 87, 36)
+
+$vt-color-default: $info
+$vt-color-warning: rgb(250, 238, 204)
+$vt-text-color-warning: rgb(119, 88, 0)
+
+$vt-color-error: rgb(254, 223, 217)
+$vt-text-color-error: rgb(130, 50, 33)
+
+.Vue-Toastification__container.top-right.toast-class
+  top: 4em !important
+.Vue-Toastification__toast--success.toast-class
+  border-left: 10px solid $metaplay-green-darker
+.Vue-Toastification__toast--error.toast-class
+  border-left: 10px solid $metaplay-red
+.Vue-Toastification__toast--warning.toast-class
+  border-left: 10px solid $metaplay-yellow
+.Vue-Toastification__close-button
+  opacity: 1 !important
+.Vue-Toastification__toast
+  width: 75% !important
+
+// Import the regular Vue Toastification stylesheets
+@import './node_modules/vue-toastification/src/scss/_variables'
+@import './node_modules/vue-toastification/src/scss/_toastContainer'
+@import './node_modules/vue-toastification/src/scss/_toast'
+@import './node_modules/vue-toastification/src/scss/_closeButton'
+@import './node_modules/vue-toastification/src/scss/_progressBar'
+@import './node_modules/vue-toastification/src/scss/_icon'
+@import './node_modules/vue-toastification/src/scss/animations/_fade'

@@ -1,0 +1,27 @@
+type: library
+tags:
+  - public-package
+
+project:
+  description: Utilities for fetching and displaying large lists of rapidly updating data from the game server.
+  maintainers:
+    - Teemu
+    - Paul
+
+tasks:
+  lint:
+    command: eslint . --fix
+    inputs:
+      - "src/**/*.{ts,d.ts,vue}"
+      - "*.{js,ts,cjs}"
+      - /MetaplaySDK/NodePackages/EslintConfig/index.js
+
+  typecheck:
+    command: vue-tsc --noEmit
+    deps:
+      - lint # Don't typecheck if the code doesn't lint.
+      - ^:typecheck
+    inputs:
+      - "src/**/*.{ts,d.ts,vue}"
+      - "*.{json,ts,d.ts}"
+      - /MetaplaySDK/NodePackages/TypescriptConfig/tsconfig.json

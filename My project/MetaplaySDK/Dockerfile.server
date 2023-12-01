@@ -1,0 +1,216 @@
+#----------------------------------------------------------------------
+# Global build arguments
+#----------------------------------------------------------------------
+
+# Directory where MetaplaySDK is located, relative to invocation diretory
+ARG SDK_ROOT=MetaplaySDK
+# Directory where the project root is, relative to the invocation directory
+ARG PROJECT_ROOT=.
+# Userland Backend directory, relative to PROJECT_ROOT
+ARG BACKEND_DIR=Backend
+# Userland Dashboard directory, relative to PROJECT_ROOT
+ARG DASHBOARD_DIR=$BACKEND_DIR/Dashboard
+# Directory where shared code is located, relative to PROJECT_ROOT
+ARG SHARED_CODE_DIR=Assets/SharedCode
+# Directory for (low-stakes) server secrets, relative to the invocation directory
+ARG SERVER_SECRETS_DIR=$PROJECT_ROOT/$BACKEND_DIR/Server/Secrets
+# Directory for server game configs, relative to the invocation directory
+ARG SERVER_GAME_CONFIG_DIR=$PROJECT_ROOT/$BACKEND_DIR/Server/GameConfig
+# Directory for pnpm project root. This is where pnpm lockfile and workspace are located.
+ARG PNPM_ROOT=.
+ARG RUN_TESTS=0
+
+#----------------------------------------------------------------------
+# Build game server C# project
+#----------------------------------------------------------------------
+
+# Available versions in: https://hub.docker.com/_/microsoft-dotnet-sdk
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-dotnet-base
+
+# Build arguments
+ARG BUILD_NUMBER=none
+ARG COMMIT_ID=none
+ARG SDK_ROOT
+ARG PROJECT_ROOT
+ARG BACKEND_DIR
+ARG SHARED_CODE_DIR
+ARG RUN_TESTS
+
+# Install diagnostics tools (installation requires SDK, copied into runtime image)
+RUN dotnet tool install --global dotnet-counters && \
+    dotnet tool install --global dotnet-trace && \
+    dotnet tool install --global dotnet-dump && \
+    dotnet tool install --global dotnet-gcdump
+ENV PATH="/root/.dotnet/tools:${PATH}"
+
+# Copy files
+COPY $SDK_ROOT/.editorconfig /build/$SDK_ROOT/.editorconfig
+COPY $SDK_ROOT/Backend /build/$SDK_ROOT/Backend
+COPY $SDK_ROOT/Client /build/$SDK_ROOT/Client
+COPY $SDK_ROOT/Scripts /build/$SDK_ROOT/Scripts
+COPY $PROJECT_ROOT/$BACKEND_DIR /build/$PROJECT_ROOT/$BACKEND_DIR
+COPY $PROJECT_ROOT/$SHARED_CODE_DIR /build/$PROJECT_ROOT/$SHARED_CODE_DIR
+
+# Restore dependencies (before splitting into multiple build contexts)
+RUN --mount=type=cache,id=nuget-cache,target=/root/.nuget/packages \
+    dotnet restore /build/$PROJECT_ROOT/$BACKEND_DIR/Server -r linux-x64 && \
+    dotnet restore /build/$PROJECT_ROOT/$BACKEND_DIR/BotClient -r linux-x64
+
+# Inject build number and commit id
+RUN /bin/bash /build/$SDK_ROOT/Scripts/update-cloudcore-versions.sh ${BUILD_NUMBER} ${COMMIT_ID} /build/$SDK_ROOT/Backend/Cloud/CloudCoreVersion.cs
+
+# Run SDK unit tests
+RUN --mount=type=cache,id=nuget-cache,target=/root/.nuget/packages \
+    if [ "$RUN_TESTS" != "0" ]; then \
+      dotnet test /build/$SDK_ROOT/Backend/Cloud.Tests && \
+      dotnet test /build/$SDK_ROOT/Backend/Cloud.Serialization.Compilation.Tests && \
+      dotnet test /build/$SDK_ROOT/Backend/Server.Tests; \
+    else echo "Skipping unit tests"; fi
+
+## Build server
+FROM build-dotnet-base AS build-server
+ARG PROJECT_ROOT
+ARG BACKEND_DIR
+RUN --mount=type=cache,id=nuget-cache,target=/root/.nuget/packages \
+    dotnet publish /build/$PROJECT_ROOT/$BACKEND_DIR/Server -c Release -o /build/out --use-current-runtime --self-contained false
+
+# Generate the serializer
+WORKDIR /build/out
+RUN dotnet Server.dll --MetaplayBakeForContainer
+
+
+## Build botclient
+FROM build-dotnet-base AS build-botclient
+ARG PROJECT_ROOT
+ARG BACKEND_DIR
+RUN --mount=type=cache,id=nuget-cache,target=/root/.nuget/packages \
+    dotnet publish /build/$PROJECT_ROOT/$BACKEND_DIR/BotClient -c Release -o /build/out --use-current-runtime --self-contained false
+
+# Generate the serializer
+WORKDIR /build/out
+RUN dotnet BotClient.dll --MetaplayBakeForContainer
+
+#----------------------------------------------------------------------
+# Build dashboard
+#----------------------------------------------------------------------
+
+FROM node:18-bullseye-slim AS build-dashboard
+ARG SDK_ROOT
+ARG PROJECT_ROOT
+ARG BACKEND_DIR
+ARG DASHBOARD_DIR
+ARG PNPM_ROOT
+ARG RUN_TESTS
+
+# Install required Cypress dependencies if building for integration tests
+RUN if [ "$RUN_TESTS" != "0" ]; then \
+      apt-get update && \
+      apt-get install --no-install-recommends -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb; \
+    fi
+
+# Install pnpm
+RUN npm i -g pnpm
+
+# Copy pnpm files
+COPY $PNPM_ROOT/pnpm-*.yaml /build/$PNPM_ROOT/
+
+# Copy all dashboard modules
+COPY $SDK_ROOT/NodePackages* /build/$SDK_ROOT/NodePackages/
+
+# Copy the selected dashboard project
+COPY $PROJECT_ROOT/$DASHBOARD_DIR /build/$PROJECT_ROOT/$DASHBOARD_DIR
+
+# Install dashboard deps
+# If pnpm-lock.yaml exists, use it. Otherwise, generate it using the latest
+# compatible versions of the dependencies. NOTE: If the pnpm-lock.yaml doesn't
+# exists and latest dependency versions are used, it is possible that a dependency
+# may no longer be compatible and break something. Thus, it is strongly recommended
+# to generate a pnpm-lock.yaml and commit it to the project's source repository!
+# Note: If not running in integration tests, skip Cypress installation
+# Note: We're caching both the pnpm store and Cypress install caches -- these only work locally?
+WORKDIR /build/$PNPM_ROOT/
+RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
+    --mount=type=cache,id=cypress-cache,sharing=locked,target=/root/.cache/Cypress \
+    if [ "$RUN_TESTS" = "0" ]; then \
+      export CYPRESS_INSTALL_BINARY=0; \
+    fi && \
+    if [ -f "/build/$PNPM_ROOT/pnpm-lock.yaml" ]; then \
+      pnpm install --frozen-lockfile; \
+    else \
+      echo "Warning: No pnpm-lock.yaml found! You should consider creating one with 'pnpm install' and committing it into the repository!" && \
+      pnpm install; \
+    fi
+
+# If running tests, take a copy of Cypress into /cypress-cache and use it when running tests
+ENV CYPRESS_CACHE_FOLDER=/cypress-cache
+RUN --mount=type=cache,id=cypress-cache,sharing=locked,target=/root/.cache/Cypress \
+    if [ "$RUN_TESTS" = "1" ]; then \
+      cp -R /root/.cache/Cypress /cypress-cache; \
+    fi
+
+WORKDIR /build/$PROJECT_ROOT/$DASHBOARD_DIR
+
+# If running in integration tests, run Cypress verify (to avoid timeout issues when running the tests)
+# RUN if [ "$RUN_TESTS" != "0" ]; then \
+#       npx cypress verify; \
+#     fi
+
+# Run dashboard linter
+RUN pnpm eslint . --fix
+
+# Run dashboard type checking
+RUN pnpm vue-tsc --noEmit
+
+# Run dashboard unit tests
+RUN pnpm vitest run
+
+# Run dashboard build
+RUN pnpm vite build
+
+#----------------------------------------------------------------------
+# Generate runtime image
+#----------------------------------------------------------------------
+
+# Available versions in: https://hub.docker.com/_/microsoft-dotnet-aspnet
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+ARG SDK_ROOT
+ARG PROJECT_ROOT
+ARG BACKEND_DIR
+ARG DASHBOARD_DIR
+ARG SERVER_SECRETS_DIR
+ARG SERVER_GAME_CONFIG_DIR
+ARG SDK_ROOT
+
+# Ports: 80 (dashboard/admin api), 6000 (node remoting), 9090 (Prometheus metrics), 9339 (clients)
+EXPOSE 80 6000 9090 9339
+
+# Upgrade the distro packages & install some useful tools
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y -q --no-install-recommends wget && \
+    apt-get clean && \
+    rm -r /var/lib/apt/lists/*
+
+# Copy diagnostics tools
+COPY --from=build-dotnet-base /root/.dotnet/tools /usr/local/bin/
+
+# Copy botclient build artifacts
+COPY --from=build-botclient /build/out /botclient
+
+COPY $PROJECT_ROOT/$BACKEND_DIR/BotClient/Config /botclient/Config
+
+# Copy server build artifacts
+COPY --from=build-server /build/out /gameserver
+COPY --from=build-dashboard /build/$PROJECT_ROOT/$DASHBOARD_DIR/dist /gameserver/wwwroot
+
+# Copy server configs (active configuration is chosen from Helm chart)
+COPY $SERVER_GAME_CONFIG_DIR /gameserver/GameConfig
+COPY $PROJECT_ROOT/$BACKEND_DIR/Server/Config /gameserver/Config
+COPY $SERVER_SECRETS_DIR /gameserver/Secrets
+
+# Copy entrypoint.sh
+COPY $SDK_ROOT/Backend/entrypoint.sh /entrypoint.sh
+
+# By default, start gameserver
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["gameserver"]

@@ -1,0 +1,5 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.android.gms:play-services-auth-blockstore:16.2.0" />
+  </androidPackages>
+</dependencies>

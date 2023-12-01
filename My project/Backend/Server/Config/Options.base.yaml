@@ -1,0 +1,12 @@
+### Base options file, included for all platforms
+
+## Database
+
+Database:
+  # Master database version: bump version to force the older versions of the database to be reset.
+  # Useful during development, but should never be done in production.
+  MasterVersion: 1
+
+  # When your game goes live, we recommend disabling (uncommenting) NukeOnVersionMismatch so
+  # databases are never accidentally nuked!
+  # NukeOnVersionMismatch: false
